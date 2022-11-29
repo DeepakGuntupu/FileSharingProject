@@ -1,0 +1,52 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    
+   
+    <!--default conditions for bootstrap-->
+   
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="{% static 'blog/main.css' %}"> 
+    <!--Display name for tab-->
+    {% if title %}
+        <title>File Sharing - {{title}}</title>
+    {% else %}
+        <title>file Sharing</title>
+    {% endif %}
+
+</head>
+  <body style="background:#898282"><!--color for background navigation pannel-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary"><!--suitable class for structure-->
+                <a class="navbar-brand font-weight-bold" href="{% url 'blog-home' %}"><i class="fas fa-file"></i> Share Securely services</a><!--heading in navigation panel-->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                 
+                    <!--when user is identified logged in -->
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'user-posts' user %}" class="btn btn-dark"> My Posts</a> <!--files posted by logged in user-->
+                    <a href="{% url 'post-create' %} " class="btn btn-success"> New Post</a><!--To post a new file-->
+                    <a href="{% url 'profile' %} " class="btn btn-dark"> {{ user.username }}</a><!--display username-->
+                    <a href="{% url 'logout' %} " class="btn btn-success"> Sign Out</a><!--button to signout our active user-->
+                    
+                    {% else %}
+                    <!--button redirects to login_page-->
+                    <a href="{% url 'login' %} " class="btn btn-dark"> Log In</a>
+                    <!--button redirects to signup_page-->
+                    <a href="{% url 'register' %} " class="btn btn-success">  Sign Up</a>
+                    {% endif %}
+                  
+                </div>
+              </nav>
+      
+    {% block content %}
+      
+    {% endblock  %}
+</div> 
+    
+  </body>
+</html>

@@ -1,0 +1,61 @@
+{% extends "blog/base.html" %}
+{% block content %}
+
+<div class="jumbotron mt-5  bg-dark pt-3">
+  <a class="btn btn-primary flex-last"  href="{% url 'blog-home' %}"><i class="fa fa-arrow-left"></i> back</a>
+<article class="media content-section shadow mt-2 ">
+   <a href="{{ object.author.profile.image.url }} " target="_blank"> <img src="{{ object.author.profile.image.url }}  " alt="" class="rounded img-fluid w-50 h-50 d-block shadow">
+   </a>
+    <div class="media-body">
+      <!--user name based on post-->       
+      <div class="">
+        <div class="d-flex justify-content-between">
+        <a class="mr-4 mt-0 mb-0  text-dark" href="{% url 'user-posts' object.author.username  %}"><h3>{{ object.author }}</h3>
+          
+
+        </a>
+        <!--download button-->
+        <small class=" text-align-right">{{ object.date_upload }}</small>
+        <a href="{{ object.file.url }}" download class="btn btn-primary flex-last" type="submit" style="float: right;">Download <i class="fas fa-download"></i> </a>
+         
+        <!--post title-->
+        </div>
+        <h2>{{ object.title }}</h2>
+        <h4 class="article-content">{{ object.content }}</h4>
+        {% if object.author != user %}
+          
+        {% endif %}
+        <hr>
+        {% if object.author == user %}
+        <!--if user match with object-->
+          <div>
+            <!--update button-->
+            <a class="btn btn-secondary" href="{% url 'post-update' object.id %}">Update</a>
+            <!--delete button-->
+            <a class="btn btn-danger " href="{% url 'post-delete' object.id %}">Delete</a>
+          </div>
+        {% endif %}
+      </div>
+      <div>
+        {% if object.file %}
+          <!--if the file is a image i.e with jpg ,jpeg,png format display preview of image-->
+          {% if object.extension == '.jpg' or object.extension == 'jpeg' or object.extension == 'png' %}
+            <a href="{{ object.file.url }}"  download ><img src="{{ object.file.url }}" alt="" class="img-fluid "></a>
+            <a href="{{ object.file.url }}"  download class="text-dark"><h5>{{ object.file }}</h5></a>
+          <!--if file is a video i.e mp4 file play video automatically-->
+          {% elif object.extension == '.mp4' %}
+            <div class="embed-responsive embed-responsive-16by9">
+              <video id="video-1_html_api" class="vjs-tech" preload="auto" autoplay >
+                <source src="{{ object.file.url }}" type="video/mp4" class="embed-responsive">
+              </video>
+            </div>
+            <a href="{{ object.file.url }}"  download class="text-dark"><h2>{{ object.file }}</h2></a>
+          {% else %}
+            <a href="{{ object.file.url }}"  download class="text-dark"><h2>{{ object.file }}</h2></a>
+          {% endif %}
+        {% endif %}
+      </div>
+     
+    </div>
+  </article>
+{% endblock content %}

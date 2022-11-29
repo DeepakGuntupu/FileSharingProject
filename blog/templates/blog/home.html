@@ -1,0 +1,70 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    {% for post in posts %}
+    <div class="row">
+      <div class="col-12">
+        <div class="jumbotron  bg-red shadow">
+          <article class="media content-section shadow h-40">
+            <!--display profile picture of the user -->
+            <a href="{{ post.author.profile.image.url }} " target="_blank"> <img src="{{ post.author.profile.image.url }}  " alt="" class="rounded img-fluid w-50 h-50 d-block shadow mt-3 ml-2">
+            </a>
+            <div class="media-body mt-2 ">
+              <!--Title of the post-->
+              <h1><a class="article-title text-justify " href="{% url 'post-detail' post.id %}">Title:-{{ post.title }}</a></h1>
+              <div class="article-metadata d-flex justify-content-between">
+                <!--Name of the owner posted-->
+                <a class=" " href="{% url 'user-posts' post.author.username  %}"><h5 &emsp> Posted By:-{{ post.author }}</h5></a>
+  
+              </div>
+              {% if post.file %}
+              <!--description for post-->
+              <a href="{{ post.file.url }}"  download class="text  "><h5>{{ post.blog }}</h5></a>
+              {% endif %}
+         
+          
+         
+              <!--description for post-->
+              <div class="d-flex justify-content-between">
+                <p class="article-content ">File desc:-{{ post.content }}</p>
+                {% if post.file %}
+              
+              {% endif %}
+            
+              </div>
+          
+            </div>
+          </article>
+          <!--download button for post-->
+          <div class="form-group mt-1 pt-1  m-3 " style="float: left;">          
+            <a class="btn btn-outline-primary  "  href="{{ post.file.url }}"  download type="submit">Download <i class="fas fa-download"></i></a>
+          </div>
+          <!--button to open the file-->
+          <div class="form-group mt-1 pt-1  m-3 " style="float: left;">          
+            <a class="btn btn-outline-primary   "  href="{% url 'user-posts' post.author.username  %}">Open <i class="fas fa-folder-open"></i></a>
+          </div>
+          </div> 
+      </div>
+    </div>        
+    {% endfor %}
+    {% if is_paginated %}
+      <!--pages buttons first and back-->
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4 bg-dark" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4 bg-dark" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+      <!--pages buttons in terms of numericals-->
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4 bg-dark" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4 bg-dark" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      <!--pages buttons next and last-->
+      {% if page_obj.has_next %}
+        <a class="btn btn-warning" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-info mx-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+
+    {% endif %}
+{% endblock content %}
