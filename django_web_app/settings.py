@@ -15,6 +15,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['myfilesharingapp1.azurewebsites.net']
 
+CSRF_TRUSTED_ORIGINS = [
+     'https://myfilesharingapp1.azurewebsites.net'
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'https://myfilesharingapp1.azurewebsites.net'
+]
 
 
 
@@ -59,8 +66,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'django_web_app.wsgi.application'
-
-
 
 
 DATABASES = {
